@@ -3,10 +3,13 @@
     <div>My Balance</div>
     <div>Staked</div>
   </div>
+
+  <!-- TODO: *ngIf else -->
   <div *ngIf="!(fiatDetails$ | async)">
     <div>... </div>
     <div>...</div>
   </div>
+
   <div *ngIf="(fiatDetails$ | async)">
     <div>{{(fiatDetails$ | async).balance || '...' }} </div>
     <div>{{(fiatDetails$ | async).staked || '...' }}</div>

@@ -10,11 +10,11 @@ interface IFiatDetails {
 }
 
 @Component({
-  selector: 'app-layout',
-  templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss']
+  selector: 'app-account-info',
+  templateUrl: './account-info.component.html',
+  styleUrls: ['./account-info.component.scss']
 })
-export class LayoutComponent implements OnInit {
+export class AccountInfoComponent implements OnInit {
   cosmosInstance: CosmosServiceInstance;
   subscription: Subscription;
   fiatDetails$: Observable<IFiatDetails>;
