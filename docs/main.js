@@ -87,7 +87,7 @@ var AppRoutingModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid pt-2 blue-custom\">\n  <div class=\"row small pt-2\">\n    <div class=\"text-center col-12 d-flex justify-content-around mb-2\">\n      <div *ngIf=\"!showBack\" style=\"width: 50px;display: inline-block; height: 40px\">\n        <img src=\"/assets/images/trust_logo.svg\" alt=\"trust\">\n      </div>\n      <div *ngIf=\"showBack\" >\n        <div style=\" height: 40px; margin-left: -5px\" class=\"text-center col-12 d-flex justify-content-around pb-2 pt-1\">\n          <div (click)=\"goBack()\"><i class=\"fas fa-arrow-left fa-2x navigation-icons\"></i></div>\n        </div>\n      </div>\n    </div>\n  </div>\n  <div class=\"container p-0 pt-2 pb-3\">\n    <div class=\"container \">\n      <div class=\"row small\">\n        <div class=\"col-12 card\">\n          <app-account-info></app-account-info>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n<div class=\"container pt-3\">\n  <router-outlet></router-outlet>\n</div>\n\n"
+module.exports = "<div class=\"container-fluid pt-2 blue-custom\">\n  <div class=\"row small pt-2\">\n    <div class=\"text-center col-12 d-flex justify-content-around mb-2\">\n      <div *ngIf=\"!showBack\" style=\"width: 50px;display: inline-block; height: 40px\">\n        <img src=\"assets/images/trust_logo.svg\" alt=\"trust\">\n      </div>\n      <div *ngIf=\"showBack\" >\n        <div style=\" height: 40px; margin-left: -5px\" class=\"text-center col-12 d-flex justify-content-around pb-2 pt-1\">\n          <div (click)=\"goBack()\"><i class=\"fas fa-arrow-left fa-2x navigation-icons\"></i></div>\n        </div>\n      </div>\n    </div>\n  </div>\n  <div class=\"container p-0 pt-2 pb-3\">\n    <div class=\"container \">\n      <div class=\"row small\">\n        <div class=\"col-12 card\">\n          <app-account-info></app-account-info>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n<div class=\"container pt-3\">\n  <router-outlet></router-outlet>\n</div>\n\n"
 
 /***/ }),
 
@@ -140,7 +140,7 @@ var AppComponent = /** @class */ (function () {
             if (!event.url) {
                 return;
             }
-            _this.showBack = event.url !== '/main';
+            _this.showBack = event.url !== '/main' || event.url !== '/staking-ng/main';
         });
         this.endpoint = _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].production
             ? 'https://blockatlas.trustwalletapp.com/'
