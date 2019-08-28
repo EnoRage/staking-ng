@@ -5,6 +5,7 @@ import 'reflect-metadata';
 import {CosmosRPC, CosmosAccount, CosmosDelegation} from '@trustwallet/rpc'
 import BigNumber from 'bignumber.js';
 import {map} from "rxjs/operators";
+import {forEach} from "@angular/router/src/utils/collection";
 
 
 export interface CoinPrice {
@@ -83,6 +84,7 @@ export class CosmosServiceInstance {
     return from(this.rpc.getAccount(address)).pipe(
       map(( account : CosmosAccount ) => {
         const balances = (account as CosmosAccount).coins;
+        // @ts-ignore
         const result = balances.find(( coin ) => coin.denom.toUpperCase() === "UATOM");
         return result.amount;
       })
@@ -133,11 +135,16 @@ export class CosmosServiceInstance {
     );
   }
 
-  getStakedAmount() : Observable<any>{
+  getStakedAmount() : Observable<number> {
     return from(this.rpc.listDelegations(this.account)).pipe(
-      map((delegations: CosmosDelegation[])=> {
-          console.log(delegations);
-        return delegations;
+      map(( delegations : any[] ) => {
+        let sums = [];
+        // @ts-ignore
+        for(let i=0; i < delegations.length; i++) {
+          // @ts-ignore
+          sums.push(delegations[i].shares);
+        }
+        return  (BigNumber.sum(...sums).toNumber() / 1000000)  ;
       })
     )
   }

@@ -16,9 +16,13 @@
             <div>My Balance</div>
             <div>Staked</div>
           </div>
-          <div>
-            <div>{{(fiat$ | async) || '...' }} </div>
-            <div>0</div>
+          <div *ngIf="!(fiatDetails$ | async)">
+            <div>... </div>
+            <div>...</div>
+          </div>
+          <div *ngIf="(fiatDetails$ | async)">
+            <div>{{(fiatDetails$ | async).balance || '...' }} </div>
+            <div>{{(fiatDetails$ | async).staked || '...' }}</div>
           </div>
         </div>
       </div>
