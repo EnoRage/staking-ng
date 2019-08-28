@@ -5,12 +5,11 @@
         <div class="card-body p-2">
           <div class="col-12 text-center">
             <img style="width: 90px"
-                 src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/cosmos/validators/assets/cosmosvaloper102ruvpv2srmunfffxavttxnhezln6fnc54at8c/logo.png"
-                 alt="cosmos">
+                 src="{{(validators | async).info.description || '...'}}"
+                 alt="{{(validators | async).info.name || '...'}}">
           </div>
           <div class="text-center pt-1">
-            <p class="description">We have been participating in the validating role since early 2018 and is a proud
-              member of the Never Jailed Crew of the Game of Stakes</p>
+            <p class="description">{{(validators | async).info.description || '...'}}</p>
           </div>
           <div style="display: grid; grid-template: 1fr 1fr  / 1fr 1fr;"
                class="col-12 text-center pt-2">
@@ -21,10 +20,10 @@
               <h5>Staked amount</h5>
             </div>
             <div>
-              <p class="metric">9.65%</p>
+              <p class="metric">{{(validators | async).reward.annual || '...'}}</p>
             </div>
             <div>
-              <p class="metric">0</p>
+              <p class="metric">{{(stakedSum | async) || '...'}}</p>
             </div>
           </div>
           <div class="col-12 text-center pt-2">

@@ -50,6 +50,7 @@ export class AppComponent {
   }
 
 
+  // @ts-ignore
   getValidatorsOnce$(): Observable<Object> {
     return this.http.get(`${this.endpoint}v2/cosmos/staking/validators`);
   }

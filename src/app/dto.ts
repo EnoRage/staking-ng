@@ -8,3 +8,6 @@ export interface IBlockchainDto {
   annualRate: number;
   iconUri: string;
 }
+
+
+
