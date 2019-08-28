@@ -143,11 +143,17 @@ export class CosmosServiceInstance {
       map(( delegations : any[] ) => {
         let sums = [];
         // @ts-ignore
-        for (let i = 0; i < delegations.length; i++) {
+        if(delegations)
+        {
           // @ts-ignore
-          sums.push(delegations[i].shares);
+          for (let i = 0; i < delegations.length; i++) {
+            // @ts-ignore
+            sums.push(delegations[i].shares);
+          }
+          return (BigNumber.sum(...sums).toNumber() / 1000000);
         }
-        return (BigNumber.sum(...sums).toNumber() / 1000000);
+           return 0;
+
       })
     );
   }

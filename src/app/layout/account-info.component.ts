@@ -22,14 +22,16 @@ export class AccountInfoComponent implements OnInit {
   constructor(private trustProvider: TrustProviderService, private cosmos: CosmosService) {
 
     // this.subscription = this.trustProvider.currentAccount$.subscribe(( account ) => {
-    this.cosmosInstance = this.cosmos.getInstance('cosmos1cj7u0wpe45j0udnsy306sna7peah054upxtkzk');
+    this.cosmosInstance = this.cosmos.getInstance('cosmos1nynns8ex9fq6sjjfj8k79ymkdz4sqth06xexae');
     this.fiatDetails$ =
       combineLatest(
         [this.cosmosInstance.getPrice(), this.cosmosInstance.balance$, this.cosmosInstance.getStakedAmount()]).pipe(
         map((x: any[]) => {
           const [price, rawBalance, rawStaked] = x;
           // TODO: move to pipe
+          // @ts-ignore
           const balance = '$' + (Number(price) * Number(rawBalance)).toFixed(2);
+          // @ts-ignore
           const staked = '$' + (Number(price) * Number(rawStaked)).toFixed(2);
           const fiatDetails: IFiatDetails = {balance, staked};
           return fiatDetails;

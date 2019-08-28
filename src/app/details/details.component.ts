@@ -3,7 +3,7 @@ import {ActivatedRoute} from "@angular/router";
 import {CosmosService, CosmosServiceInstance, Validators, Validator} from "../cosmos.service";
 import {find, map} from "rxjs/operators";
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
 
 @Component({
   selector: 'app-details',
@@ -17,38 +17,52 @@ export class DetailsComponent implements OnInit {
   stakedSum : Observable<number>;
 
   constructor( activatedRoute : ActivatedRoute, private http : HttpClient, private cosmos : CosmosService ) {
-    this.validatorId = activatedRoute.snapshot.params.blockchainId;
+    this.validatorId = activatedRoute.snapshot.params.validatorId;
     this.cosmosInstance = this.cosmos.getInstance('cosmos1cj7u0wpe45j0udnsy306sna7peah054upxtkzk');
+
+  }
+
+  ngOnInit() {
     this.validators = this.getValidator(this.validatorId);
     this.stakedSum = this.getStakedAmount(this.validatorId);
   }
 
-  ngOnInit() {
-
-  }
-
   getValidator( validatorId : string ) : Observable<Validator> {
+
+
     // @ts-ignore
     return this.cosmosInstance.getValidators().pipe(
-      // @ts-ignore
-      find(validator => validator.id == validatorId)
+      map(( x ) => {
+
+        // @ts-ignore
+        const a = [];
+        // @ts-ignore
+        x.docs.forEach(( i ) => {
+          if (i.id == validatorId) {
+            // @ts-ignore
+            a.push(i);
+          }
+        });
+        return a[0];
+      })
     );
   }
 
   getStakedAmount( validatorId : string ) : Observable<number> {
-    return this.cosmosInstance.getDelegations().pipe(
-      map(( response ) => {
-        let stakedSumArray = [];
-        response.forEach(( i ) => {
-          if (response[i].validator_address == validatorId) {
-            // @ts-ignore
-            stakedSumArray.push(response[i].shares);
-          }
-        });
-        // @ts-ignore
-        return stakedSum.reduce(( a, b ) => a + b, 0)
-      })
-    )
+    // return this.cosmosInstance.getDelegations().pipe(
+    //   map(( response ) => {
+    //     let stakedSumArray = [];
+    //     response.forEach(( i ) => {
+    //       if (response[i].validator_address == validatorId) {
+    //         // @ts-ignore
+    //         stakedSumArray.push(response[i].shares);
+    //       }
+    //     });
+    //     // @ts-ignore
+    //     return stakedSum.reduce(( a, b ) => a + b, 0)
+    //   })
+    // )
+    return of(1)
   }
 
 

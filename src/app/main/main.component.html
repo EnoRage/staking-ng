@@ -6,7 +6,7 @@
         <table class="table">
           <tbody>
           <ng-template ngFor let-item [ngForOf]="(myStakeHolders | async)" let-i="index">
-            <tr (click)="navigateToPosDelegatorsList(item)">
+            <tr (click)="navigateToMyStakeHoldersList(item)">
               <td>
                 <img class="icon" src="{{item.info.image}}" alt="cosmos">
               </td>
