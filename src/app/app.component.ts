@@ -29,7 +29,7 @@ export class AppComponent {
         return;
       }
 
-      this.showBack = event.url !== '/main' || event.url !== '/staking-ng/main';
+      this.showBack = event.url !== '/';
     });
 
     this.endpoint = environment.production
