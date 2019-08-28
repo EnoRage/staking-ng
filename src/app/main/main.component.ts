@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {combineLatest, Observable, of} from 'rxjs';
+import {combineLatest, Observable, of, timer} from 'rxjs';
 import {IBlockchainDto} from '../dto';
 import {Router} from '@angular/router';
 import {CosmosService, CosmosServiceInstance, Validator, Validators} from "../cosmos.service";
 import {find, map} from "rxjs/operators";
+import {element} from "protractor";
 
 // interface IStakeHolderDto {
 //
@@ -20,28 +21,38 @@ export class MainComponent implements OnInit {
   // @ts-ignore
   blockchains : Array<IBlockchainDto> = [];
   // @ts-ignore
-  myStakeHolders : Array<Validator> = [];
+  myStakeHolders : Observable<Array<Validator>>;
   cosmosInstance : CosmosServiceInstance;
 
   constructor( private router : Router, private cosmos : CosmosService ) {
     this.cosmosAnnualRate = of('9%');
     this.cosmosInstance = this.cosmos.getInstance('cosmos1cj7u0wpe45j0udnsy306sna7peah054upxtkzk');
-     combineLatest([this.cosmosInstance.getValidators(), this.cosmosInstance.getDelegations()]).pipe(
+    this.myStakeHolders = combineLatest([timer(0, 10000), this.cosmosInstance.getValidators(), this.cosmosInstance.getDelegations()]).pipe(
       map(( x : any ) => {
-        const [validators, delegators] = x;
-        let validatorsFinal;
-        // @ts-ignore
-        delegators.forEach(( i ) => {
-          const v = validators.docs.find(( validator ) => {
-            validator.id === delegators[i].validator_address
-          });
-          if (v) {
-            // @ts-ignore
-            validatorsFinal.push(v);
-          }
-          return validatorsFinal;
+        const [timer, validators, delegators] = x;
+
+        let delegatorsAddresses = [];
+        delegators.forEach(( delegator ) => {
+          // @ts-ignore
+          delegatorsAddresses.push(delegator.validatorAddress);
         })
-      })).subscribe()
+        // @ts-ignore
+        const res = delegatorsAddresses.filter(( item, pos, self ) => {
+          return self.indexOf(item) == pos;
+        });
+
+        // @ts-ignore
+        let validatorsFinal = [];
+        validators.docs.forEach(( validator ) => {
+          const f = res.find(element => element == validator.id);
+          if (f) {
+            // @ts-ignore
+            validatorsFinal.push(validator);
+          }
+
+        });
+        return validatorsFinal;
+      }));
   }
 
   ngOnInit() {
