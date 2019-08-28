@@ -9,10 +9,11 @@ import {TrustProvider} from '@trustwallet/provider';
 export class TrustProviderService {
 
   constructor() {
-
-    this.currentAccount$ = this.getAddressOnce(this.network).pipe(
-      shareReplay(1)
-    );
+    if (TrustProvider.isAvailable) {
+      this.currentAccount$ = this.getAddressOnce(this.network).pipe(
+        shareReplay(1)
+      );
+    }
 
     this.currentAccount$.subscribe();
   }
@@ -90,19 +91,19 @@ export class TrustProviderService {
 
 
   getAddressOnce( network : number ) : Observable<string> {
-    if (TrustProvider.isAvailable) {
-      return from(TrustProvider.getAccounts()).pipe(
-        map(( accounts : any ) => {
-          const accountRaw = accounts.find(( account ) => account.network === network);
-          // @ts-ignore
-          alert(JSON.stringify(accountRaw.address));
-          // @ts-ignore
-          return JSON.stringify(accountRaw.address)
-            .replace('"', '')
-            .replace('"', '');
-        })
-      )
-    }
+
+    return from(TrustProvider.getAccounts()).pipe(
+      map(( accounts : any ) => {
+        const accountRaw = accounts.find(( account ) => account.network === network);
+        // @ts-ignore
+        alert(JSON.stringify(accountRaw.address));
+        // @ts-ignore
+        return JSON.stringify(accountRaw.address)
+          .replace('"', '')
+          .replace('"', '');
+      })
+    )
+
     // return interval(2000).pipe(
     //   // @ts-ignore
     //   filter(() => !!(window as any).trustProvider),
