@@ -5,8 +5,8 @@ import {combineLatest, Observable, Subscription} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 
 interface IFiatDetails {
-  balance: string;
-  staked: string;
+  balance: Number;
+  staked: Number;
 }
 
 @Component({
@@ -28,11 +28,8 @@ export class AccountInfoComponent implements OnInit {
         [this.cosmosInstance.getPrice(), this.cosmosInstance.balance$, this.cosmosInstance.getStakedAmount()]).pipe(
         map((x: any[]) => {
           const [price, rawBalance, rawStaked] = x;
-          // TODO: move to pipe
-          // @ts-ignore
-          const balance = '$' + (Number(price) * Number(rawBalance)).toFixed(2);
-          // @ts-ignore
-          const staked = '$' + (Number(price) * Number(rawStaked)).toFixed(2);
+          const balance = (Number(price) * Number(rawBalance));
+          const staked = (Number(price) * Number(rawStaked));
           const fiatDetails: IFiatDetails = {balance, staked};
           return fiatDetails;
         }),

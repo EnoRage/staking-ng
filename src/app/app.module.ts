@@ -7,6 +7,7 @@ import {MainComponent} from './main/main.component';
 import {HttpClientModule} from '@angular/common/http';
 import {PosDelegatorsComponent} from './pos-delegators/pos-delegators.component';
 import { DetailsComponent } from './details/details.component';
+import {CommonModule} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { DetailsComponent } from './details/details.component';
     DetailsComponent
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule
