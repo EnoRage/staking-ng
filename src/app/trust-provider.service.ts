@@ -13,9 +13,10 @@ export class TrustProviderService {
       this.currentAccount$ = this.getAddressOnce(this.network).pipe(
         shareReplay(1)
       );
+      this.currentAccount$.subscribe();
     }
 
-    this.currentAccount$.subscribe();
+
   }
 
   readonly network = 118; // Cosmos
