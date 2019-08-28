@@ -6,13 +6,15 @@ import {AccountInfoComponent} from './layout/account-info.component';
 import {MainComponent} from './main/main.component';
 import {HttpClientModule} from '@angular/common/http';
 import {PosDelegatorsComponent} from './pos-delegators/pos-delegators.component';
+import { DetailsComponent } from './details/details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AccountInfoComponent,
     MainComponent,
-    PosDelegatorsComponent
+    PosDelegatorsComponent,
+    DetailsComponent
   ],
   imports: [
     BrowserModule,
