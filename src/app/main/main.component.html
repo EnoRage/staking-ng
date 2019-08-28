@@ -11,7 +11,7 @@
                 <img class="icon" src="{{item.info.image}}" alt="cosmos">
               </td>
               <td class="m-0 p-0">{{item.info.name}}</td>
-              <td>{{item.reward.annual.toFixed(2)}} %</td>
+              <td>{{item.reward.annual.toFixed(2)}}%</td>
               <td>{{item.amount}}</td>
               <td>ATOM</td>
               <td>
@@ -40,7 +40,7 @@
                 <img class="icon" src="{{item.iconUri}}" alt="cosmos">
               </td>
               <td>{{item.currencyName}}</td>
-              <td>{{item.annualRate * 100}} %</td>
+              <td>{{item.annualRate | number: '1.2-2'}}%</td>
               <td>{{item.currencySymbol}}</td>
               <td>
                 <i class="fas fa-chevron-right"></i>

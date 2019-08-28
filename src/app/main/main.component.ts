@@ -38,22 +38,34 @@ function map2List(address2stake: IAggregatedDelegationMap, validators: Array<Val
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
-export class MainComponent implements OnInit {
+export class MainComponent {
 
-  cosmosAnnualRate: Observable<string>;
   blockchains: Array<IBlockchainDto> = [];
   myStakeHolders$: Observable<StakeHolderList>;
   cosmosInstance: CosmosServiceInstance;
 
   constructor(private router: Router, private cosmos: CosmosService) {
 
-    this.cosmosAnnualRate = of('9%');
     this.cosmosInstance = this.cosmos.getInstance('cosmos1cj7u0wpe45j0udnsy306sna7peah054upxtkzk');
 
     const validatorsAndDelegations = [
       this.cosmosInstance.getValidators(),
       this.cosmosInstance.getDelegations()
     ];
+
+    // this.blockchains$ = of({
+    //
+    // });
+    this.blockchains = [
+      {
+        blockchainId: 'cosmos',
+        currencyName: 'Cosmos',
+        currencySymbol: 'ATOM',
+        annualRate: undefined,
+        iconUri: 'https://assets.trustwalletapp.com/blockchains/cosmos/info/logo.png'
+      }
+    ];
+
 
     const address2StakeMap$: Observable<StakeHolderList> = combineLatest(validatorsAndDelegations).pipe(
       map((data: any[]) => {
@@ -62,6 +74,14 @@ export class MainComponent implements OnInit {
           if (!approvedValidators || !myDelegations) {
             return [];
           }
+
+
+          const bestCosmosInterestRate = approvedValidators.docs.reduce((bestRate: number, validator: Validator) => {
+            return bestRate < validator.reward.annual
+              ? validator.reward.annual
+              : bestRate;
+          }, 0);
+          this.blockchains[0].annualRate = bestCosmosInterestRate;
 
           const addresses = approvedValidators.docs.map((d) => d.id);
 
@@ -90,18 +110,6 @@ export class MainComponent implements OnInit {
       }),
       shareReplay(1)
     );
-  }
-
-  ngOnInit() {
-    this.blockchains = [
-      {
-        blockchainId: 'cosmos',
-        currencyName: 'Cosmos',
-        currencySymbol: 'ATOM',
-        annualRate: 0.09,
-        iconUri: 'https://assets.trustwalletapp.com/blockchains/cosmos/info/logo.png'
-      }
-    ];
   }
 
   navigateToPosDelegatorsList(item: IBlockchainDto) {
