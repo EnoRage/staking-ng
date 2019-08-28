@@ -60,6 +60,12 @@ export class CosmosService {
   }
 }
 
+// TODO: use BigInt and polyfill
+export function toAtom(microatom: any): number {
+  const denominator = new BigNumber(1000000) as any;
+  return Number(microatom / denominator);
+}
+
 export class CosmosServiceInstance {
   currentAccount : string;
   balance$ : Observable<string | BigNumber>;
@@ -154,7 +160,7 @@ export class CosmosServiceInstance {
           }
           return (BigNumber.sum(...sums).toNumber() / 1000000);
         }
-           return 0;
+        return 0;
       })
     );
   }
@@ -172,5 +178,15 @@ export class CosmosServiceInstance {
         return response;
       })
     )
+  }
+
+  getTransactionInfo( address : string ) : Observable<any> {
+    return from(this.rpc.getAccount(address)).pipe(
+      map(( account : CosmosAccount ) => {
+        const accountNumber = ((account as CosmosAccount).accountNumber).toString();
+        const sequence = ((account as CosmosAccount).sequence);
+        return {sequence, accountNumber};
+      })
+    );
   }
 }

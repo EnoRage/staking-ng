@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {MainComponent} from './main/main.component';
 import {PosDelegatorsComponent} from './pos-delegators/pos-delegators.component';
 import {DetailsComponent} from "./details/details.component";
+import {TestComponent} from "./test/test.component";
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'details/:validatorId',
     component: DetailsComponent,
+  },
+  {
+    path: 'test',
+    component: TestComponent,
   },
 ];
 
