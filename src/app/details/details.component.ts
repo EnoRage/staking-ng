@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {CosmosService, CosmosServiceInstance, Validators, Validator} from "../cosmos.service";
-import {find, map} from "rxjs/operators";
+import {find, map, take} from "rxjs/operators";
 import {HttpClient} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 
@@ -12,7 +12,7 @@ import {Observable, of} from "rxjs";
 })
 export class DetailsComponent implements OnInit {
   validatorId : string;
-  validators : Observable<Validator>;
+  validator : Validator;
   cosmosInstance : CosmosServiceInstance;
   stakedSum : Observable<number>;
 
@@ -23,7 +23,9 @@ export class DetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.validators = this.getValidator(this.validatorId);
+    this.getValidator(this.validatorId).subscribe(( validator : Validator ) => {
+      this.validator = validator;
+    });
     this.stakedSum = this.getStakedAmount(this.validatorId);
   }
 
@@ -33,7 +35,6 @@ export class DetailsComponent implements OnInit {
     // @ts-ignore
     return this.cosmosInstance.getValidators().pipe(
       map(( x ) => {
-
         // @ts-ignore
         const a = [];
         // @ts-ignore
@@ -44,7 +45,8 @@ export class DetailsComponent implements OnInit {
           }
         });
         return a[0];
-      })
+      }),
+      take(1)
     );
   }
 

@@ -1,15 +1,15 @@
 <div class="container pt-2">
   <div class="row small">
     <div class="col-12 pt-2">
-      <div *ngIf="(validators | async)" class="card">
+      <div *ngIf="validator" class="card">
         <div  class="card-body p-2">
           <div class="col-12 text-center">
             <img style="width: 90px"
-                 src="{{(validators | async).info.image || '...'}}"
-                 alt="{{(validators | async).info.name || '...'}}">
+                 src="{{validator.info.image || '...'}}"
+                 alt="{{validator.info.name || '...'}}">
           </div>
           <div class="text-center pt-1">
-            <p class="description">{{(validators | async).info.description || '...'}}</p>
+            <p class="description">{{validator.info.description || '...'}}</p>
           </div>
           <div style="display: grid; grid-template: 1fr 1fr  / 1fr 1fr;"
                class="col-12 text-center pt-2">
@@ -20,7 +20,7 @@
               <h5>Staked amount</h5>
             </div>
             <div>
-              <p class="metric">{{(validators | async).reward.annual.toFixed(2) + '%' || '...'}}</p>
+              <p class="metric">{{validator.reward.annual.toFixed(2) + '%' || '...'}}</p>
             </div>
             <div>
               <p class="metric">{{(stakedSum | async) || '...'}}</p>
