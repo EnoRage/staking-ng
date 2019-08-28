@@ -1,10 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {map, shareReplay} from "rxjs/operators";
-import {CosmosService, CosmosServiceInstance, Validators} from "../cosmos.service";
-import {TrustProviderService} from "../trust-provider.service";
-import {combineLatest, Observable, of, Subscription} from "rxjs";
-import BigNumber from "bignumber.js";
-import {HttpClient} from "@angular/common/http";
+import {Component, OnInit} from '@angular/core';
+import {Observable, of} from 'rxjs';
 
 @Component({
   selector: 'app-main',

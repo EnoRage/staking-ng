@@ -1,13 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {TrustProviderService} from "../trust-provider.service";
-import {CosmosService, CosmosServiceInstance, Validators} from "../cosmos.service";
-import {combineLatest, Observable, Subscription} from "rxjs";
-import BigNumber from 'bignumber.js';
-import {map, shareReplay} from "rxjs/operators";
+import {TrustProviderService} from '../trust-provider.service';
+import {CosmosService, CosmosServiceInstance, Validators} from '../cosmos.service';
+import {combineLatest, Observable, Subscription} from 'rxjs';
+import {map, shareReplay} from 'rxjs/operators';
 
-interface fiatDetails {
-  balance : string
-  staked : string
+interface IFiatDetails {
+  balance: string;
+  staked: string;
 }
 
 @Component({
@@ -16,25 +15,23 @@ interface fiatDetails {
   styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent implements OnInit {
-  cosmosInstance : CosmosServiceInstance;
-  subscription : Subscription;
-  fiatDetails$ : Observable<fiatDetails>;
+  cosmosInstance: CosmosServiceInstance;
+  subscription: Subscription;
+  fiatDetails$: Observable<IFiatDetails>;
 
-  constructor( private trustProvider : TrustProviderService, private cosmos : CosmosService ) {
+  constructor(private trustProvider: TrustProviderService, private cosmos: CosmosService) {
 
     // this.subscription = this.trustProvider.currentAccount$.subscribe(( account ) => {
     this.cosmosInstance = this.cosmos.getInstance('cosmos16gdxm24ht2mxtpz9cma6tr6a6d47x63hlq4pxt');
     this.fiatDetails$ =
       combineLatest(
         [this.cosmosInstance.getPrice(), this.cosmosInstance.balance$, this.cosmosInstance.getStakedAmount()]).pipe(
-        map(( x : any[] ) => {
+        map((x: any[]) => {
           const [price, rawBalance, rawStaked] = x;
-          // @ts-ignore
-          const balance = '$'+ (Number(price) * Number(rawBalance)).toFixed(2);
-          // @ts-ignore
+          // TODO: move to pipe
+          const balance = '$' + (Number(price) * Number(rawBalance)).toFixed(2);
           const staked = '$' + (Number(price) * Number(rawStaked)).toFixed(2);
-          const fiatDetails : fiatDetails = {balance, staked};
-          // @ts-ignore
+          const fiatDetails: IFiatDetails = {balance, staked};
           return fiatDetails;
         }),
         shareReplay(1)
