@@ -19,7 +19,6 @@ export class TrustProviderService {
   }
 
   getAddressOnce( network : number ) : Observable<string> {
-
     return interval(2000).pipe(
       // @ts-ignore
       filter(() => !!(window as any).trustProvider),
@@ -39,11 +38,11 @@ export class TrustProviderService {
     );
   }
 
-  prepareTransaction( coin : number, addressTo : string, addressFrom : string, smount : string ) : any {
+  static prepareTransaction( coin : number, addressTo : string, addressFrom : string, smount : string ) : any {
     return '';
   }
 
-  signTransaction() : any {
-
+  static signTransaction() : any {
+    return '';
   }
 }

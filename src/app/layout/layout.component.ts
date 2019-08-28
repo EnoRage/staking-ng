@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TrustProviderService} from "../trust-provider.service";
-import {CosmosService, CosmosServiceInstance} from "../cosmos.service";
+import {CosmosService, CosmosServiceInstance, Validators} from "../cosmos.service";
 import {combineLatest, Observable, Subscription} from "rxjs";
 import BigNumber from 'bignumber.js';
 import {map, shareReplay} from "rxjs/operators";
@@ -16,13 +16,13 @@ export class LayoutComponent implements OnInit {
   fiat$ : Observable<string>;
   subscription : Subscription;
 
-  constructor(private trustProvider : TrustProviderService, private cosmos : CosmosService) {
+  constructor( private trustProvider : TrustProviderService, private cosmos : CosmosService ) {
+
     this.subscription = this.trustProvider.currentAccount$.subscribe(( account ) => {
       this.cosmosInstance = this.cosmos.getInstance(account);
-      const balance$ = this.cosmosInstance.balance$;
-      this.balance$ = balance$;
-      const price$ = this.cosmosInstance.getPrice();
-      this.fiat$ = combineLatest([price$, balance$]).pipe(
+      // this.cosmosInstance.getStakedAmount().subscribe();
+      this.balance$ = this.cosmosInstance.balance$;
+      this.fiat$ = combineLatest([this.cosmosInstance.getPrice(),  this.balance$]).pipe(
         map(( x : any[] ) => {
           const [price, balance] = x;
           // @ts-ignore
