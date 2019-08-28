@@ -34,7 +34,7 @@ export class AppComponent {
 
     this.endpoint = environment.production
       ? 'https://blockatlas.trustwalletapp.com/'
-      : 'https://3e2f2399.ngrok.io/blockatlas/'; // http://localhost:9000/blockatlas/
+      : 'http://142.93.172.157:9000/blockatlas/'; // http://localhost:9000/blockatlas/
 
     this.getValidatorsOnce$().subscribe(
       (resp: any) => {
@@ -46,7 +46,6 @@ export class AppComponent {
   goBack() {
     // window.history.back();
     this.location.back();
-    console.log('goBack()...');
   }
 
 

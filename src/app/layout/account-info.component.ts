@@ -22,7 +22,7 @@ export class AccountInfoComponent implements OnInit {
   constructor(private trustProvider: TrustProviderService, private cosmos: CosmosService) {
 
     // this.subscription = this.trustProvider.currentAccount$.subscribe(( account ) => {
-    this.cosmosInstance = this.cosmos.getInstance('cosmos16gdxm24ht2mxtpz9cma6tr6a6d47x63hlq4pxt');
+    this.cosmosInstance = this.cosmos.getInstance('cosmos1cj7u0wpe45j0udnsy306sna7peah054upxtkzk');
     this.fiatDetails$ =
       combineLatest(
         [this.cosmosInstance.getPrice(), this.cosmosInstance.balance$, this.cosmosInstance.getStakedAmount()]).pipe(

@@ -18,7 +18,7 @@ export class DetailsComponent implements OnInit {
 
   constructor( activatedRoute : ActivatedRoute, private http : HttpClient, private cosmos : CosmosService ) {
     this.validatorId = activatedRoute.snapshot.params.blockchainId;
-    this.cosmosInstance = this.cosmos.getInstance('cosmos16gdxm24ht2mxtpz9cma6tr6a6d47x63hlq4pxt');
+    this.cosmosInstance = this.cosmos.getInstance('cosmos1cj7u0wpe45j0udnsy306sna7peah054upxtkzk');
     this.validators = this.getValidator(this.validatorId);
     this.stakedSum = this.getStakedAmount(this.validatorId);
   }

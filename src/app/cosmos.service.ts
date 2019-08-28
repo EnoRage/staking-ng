@@ -113,15 +113,16 @@ export class CosmosServiceInstance {
   }
 
   getLargestRate() : Observable<string> {
-    const url = 'https://blockatlas.trustwalletapp.com/v2/cosmos/staking/validators';
+    // const url = 'https://blockatlas.trustwalletapp.com/v2/cosmos/staking/validators';
+    const url = ' http://142.93.172.157:9000/blockatlas//v2/cosmos/staking/validators';
     return this.http.get(url).pipe(
       map(( x ) => {
-        console.log(x);
+        // console.log(x);
         return x;
       }),
       map(( docs : Validators ) => {
         const annualRates = [];
-        console.log(docs);
+        // console.log(docs);
         // @ts-ignore
         docs.forEach(( i ) => {
           // @ts-ignore
@@ -141,7 +142,6 @@ export class CosmosServiceInstance {
     return from(this.rpc.listDelegations(this.account)).pipe(
       map(( delegations : any[] ) => {
         let sums = [];
-        console.log(delegations);
         // @ts-ignore
         for (let i = 0; i < delegations.length; i++) {
           // @ts-ignore
@@ -157,10 +157,10 @@ export class CosmosServiceInstance {
   }
 
   getValidators() : Observable<Validators> {
-    const url = 'https://3e2f2399.ngrok.io/blockatlas/v2/cosmos/staking/validators';
+    const url = 'http://142.93.172.157:9000/blockatlas/v2/cosmos/staking/validators';
     return this.http.get(url).pipe(
       map((response: Validators) => {
-        console.log(response);
+        // console.log(response);
         return response;
       })
     )

@@ -25,24 +25,23 @@ export class MainComponent implements OnInit {
 
   constructor( private router : Router, private cosmos : CosmosService ) {
     this.cosmosAnnualRate = of('9%');
-    this.cosmosInstance = this.cosmos.getInstance('cosmos16gdxm24ht2mxtpz9cma6tr6a6d47x63hlq4pxt');
-    this.myStakeHolders = combineLatest([this.cosmosInstance.getValidators(), this.cosmosInstance.getDelegations()]).pipe(
+    this.cosmosInstance = this.cosmos.getInstance('cosmos1cj7u0wpe45j0udnsy306sna7peah054upxtkzk');
+     combineLatest([this.cosmosInstance.getValidators(), this.cosmosInstance.getDelegations()]).pipe(
       map(( x : any ) => {
-        console.log(x)
         const [validators, delegators] = x;
-        let validatorsFinal = [];
+        let validatorsFinal;
         // @ts-ignore
         delegators.forEach(( i ) => {
-          const v = validators.find(( validator ) => {
+          const v = validators.docs.find(( validator ) => {
             validator.id === delegators[i].validator_address
           });
           if (v) {
             // @ts-ignore
-            validatorsFinal.push(v)
+            validatorsFinal.push(v);
           }
           return validatorsFinal;
         })
-      }))
+      })).subscribe()
   }
 
   ngOnInit() {
