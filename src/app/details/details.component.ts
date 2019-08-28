@@ -15,7 +15,6 @@ export class DetailsComponent implements OnInit {
   validator : Validator;
   cosmosInstance : CosmosServiceInstance;
   stakedSum : Observable<string>;
-
   constructor( activatedRoute : ActivatedRoute, private http : HttpClient, private cosmos : CosmosService ) {
     this.validatorId = activatedRoute.snapshot.params.validatorId;
     this.cosmosInstance = this.cosmos.getInstance('cosmos1cj7u0wpe45j0udnsy306sna7peah054upxtkzk');
