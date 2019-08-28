@@ -15,6 +15,7 @@ import {Router} from '@angular/router';
 export class MainComponent implements OnInit {
 
   cosmosAnnualRate: Observable<string>;
+  // @ts-ignore
   blockchains: Array<IBlockchainDto> = [];
   myStakeHolders: [];
 
