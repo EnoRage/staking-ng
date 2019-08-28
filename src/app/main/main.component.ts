@@ -32,71 +32,113 @@ export class MainComponent implements OnInit {
         const [timer, validators, delegators] = x;
 
         let delegatorsAddresses = [];
-        delegators.forEach(( delegator ) => {
+
+        if (delegators && validators) {
+          delegators.forEach(( delegator ) => {
+            // @ts-ignore
+            delegatorsAddresses.push(delegator.validatorAddress);
+          });
           // @ts-ignore
-          delegatorsAddresses.push(delegator.validatorAddress);
-        })
-        // @ts-ignore
-        const res = delegatorsAddresses.filter(( item, pos, self ) => {
-          return self.indexOf(item) == pos;
-        });
-
-        // @ts-ignore
-        let validatorsFinal = [];
-        validators.docs.forEach(( validator ) => {
-          const f = res.find(element => element == validator.id);
-          if (f) {
-            // @ts-ignore
-            validatorsFinal.push(validator);
-          }
-
-        });
-        return validatorsFinal;
-      }));
-  }
-
-  ngOnInit() {
-    this.blockchains = [
-      {
-        blockchainId: 'cosmos',
-        currencyName: 'Cosmos',
-        currencySymbol: 'ATOM',
-        annualRate: 0.09,
-        iconUri: 'https://assets.trustwalletapp.com/blockchains/cosmos/info/logo.png'
-      }
-    ];
-  }
-
-  navigateToPosDelegatorsList( item : IBlockchainDto ) {
-
-    this.router.navigate([`/delegators/${item.blockchainId}`]);
-  }
-
-  navigateToMyStakeHoldersList( item : Validator ) {
-    this.router.navigate([`/details/${item.id}`]);
-  }
-
-  getValidator( validatorId : string ) : Observable<Validator> {
+          const res = delegatorsAddresses.filter(( item, pos, self ) => {
+            return self.indexOf(item) == pos;
+          });
+        //
+        //   let sums = [];
+        //   res.forEach(( i, index ) => {
+        //     if (i == delegators[index].validatorAddress
+        //       // @ts-ignore
+        //       && !sums.find(( s ) => {
+        //         s.validatorAddress == delegators[index].validatorAddress
+        //       })) {
+        //       // @ts-ignore
+        //       sums.push({validatorAddress: delegators[index].validatorAddress, sum: Number(delegators[index].shares)})
+        //     } else if (i == delegators[index].validatorAddress
+        //       // @ts-ignore
+        //       && sums.find(( s ) => {
+        //         s.validatorAddress == delegators[index].validatorAddress
+        //       })) {
+        //       sums[index]({validatorAddress: delegators[index].validatorAddress, sum: Number(delegators[index].shares)})
+        //     }
+        //   })
+        // )
     // @ts-ignore
-    return this.cosmosInstance.getValidators().pipe(
-      // @ts-ignore
-      find(validator => validator.id == validatorId)
-    );
+    let validatorsFinal = [];
+    validators.docs.forEach(( validator ) => {
+      const f = res.find(element => element == validator.id);
+      if (f) {
+        // @ts-ignore
+        validatorsFinal.push(validator);
+      }
+
+    });
+    return validatorsFinal;
   }
 
-  getStakedAmount( validatorId : string ) : Observable<number> {
-    return this.cosmosInstance.getDelegations().pipe(
-      map(( response ) => {
-        let stakedSumArray = [];
-        response.forEach(( i ) => {
-          if (response[i].validator_address == validatorId) {
-            // @ts-ignore
-            stakedSumArray.push(response[i].shares);
-          }
-        });
+}
+
+))
+;
+
+}
+
+ngOnInit()
+{
+  this.blockchains = [
+    {
+      blockchainId: 'cosmos',
+      currencyName: 'Cosmos',
+      currencySymbol: 'ATOM',
+      annualRate: 0.09,
+      iconUri: 'https://assets.trustwalletapp.com/blockchains/cosmos/info/logo.png'
+    }
+  ];
+}
+
+navigateToPosDelegatorsList(item
+:
+IBlockchainDto
+)
+{
+
+  this.router.navigate([`/delegators/${item.blockchainId}`]);
+}
+
+navigateToMyStakeHoldersList(item
+:
+Validator
+)
+{
+  this.router.navigate([`/details/${item.id}`]);
+}
+
+getValidator(validatorId
+:
+string
+) :
+Observable < Validator > {
+  // @ts-ignore
+  return this.cosmosInstance.getValidators().pipe(
+    // @ts-ignore
+    find(validator => validator.id == validatorId)
+  );
+}
+
+getStakedAmount(validatorId
+:
+string
+) :
+Observable < number > {
+  return this.cosmosInstance.getDelegations().pipe(
+    map(( response ) => {
+      let stakedSumArray = [];
+      response.forEach(( i ) => {
         // @ts-ignore
-        return stakedSum.reduce(( a, b ) => a + b, 0)
-      })
-    )
-  }
+        stakedSumArray.push(Number(i.shares) / 1000000);
+
+      });
+      // @ts-ignore
+      return stakedSumArray.reduce(( a, b ) => a + b, 0).toFixed(6)
+    })
+  )
+}
 }

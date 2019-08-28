@@ -1,4 +1,4 @@
-<div class="row small">
+<div *ngIf="(myStakeHolders | async)" class="row small">
   <div class="col-12 pt-2">
     <div class="card">
       <div class="card-body p-2">
@@ -12,7 +12,7 @@
               </td>
               <td>{{item.info.name}}</td>
               <td>{{item.reward.annual.toFixed(2)}} %</td>
-<!--              <td>{{}}</td>-->
+<!--              <td>{{(this.getStakedAmount(item.id) | async) || '...'}}</td>-->
               <td>ATOM</td>
               <td>
                 <i class="fas fa-chevron-right"></i>

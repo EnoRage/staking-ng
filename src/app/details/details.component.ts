@@ -14,7 +14,7 @@ export class DetailsComponent implements OnInit {
   validatorId : string;
   validator : Validator;
   cosmosInstance : CosmosServiceInstance;
-  stakedSum : Observable<number>;
+  stakedSum : Observable<string>;
 
   constructor( activatedRoute : ActivatedRoute, private http : HttpClient, private cosmos : CosmosService ) {
     this.validatorId = activatedRoute.snapshot.params.validatorId;
@@ -30,7 +30,6 @@ export class DetailsComponent implements OnInit {
   }
 
   getValidator( validatorId : string ) : Observable<Validator> {
-
 
     // @ts-ignore
     return this.cosmosInstance.getValidators().pipe(
@@ -50,21 +49,22 @@ export class DetailsComponent implements OnInit {
     );
   }
 
-  getStakedAmount( validatorId : string ) : Observable<number> {
-    // return this.cosmosInstance.getDelegations().pipe(
-    //   map(( response ) => {
-    //     let stakedSumArray = [];
-    //     response.forEach(( i ) => {
-    //       if (response[i].validator_address == validatorId) {
-    //         // @ts-ignore
-    //         stakedSumArray.push(response[i].shares);
-    //       }
-    //     });
-    //     // @ts-ignore
-    //     return stakedSum.reduce(( a, b ) => a + b, 0)
-    //   })
-    // )
-    return of(1)
+  getStakedAmount( validatorId : string ) : Observable<string> {
+    return this.cosmosInstance.getDelegations().pipe(
+      map(( response ) => {
+        if(response)    {
+          let stakedSumArray = [];
+          response.forEach(( i ) => {
+            // @ts-ignore
+            stakedSumArray.push(Number(i.shares) / 1000000);
+
+          });
+          // @ts-ignore
+          return stakedSumArray.reduce((a,b) => a + b, 0).toFixed(6)
+        }
+        return "0";
+      })
+    )
   }
 
 

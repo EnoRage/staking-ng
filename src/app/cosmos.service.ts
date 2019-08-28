@@ -141,6 +141,8 @@ export class CosmosServiceInstance {
   getStakedAmount() : Observable<number> {
     return from(this.rpc.listDelegations(this.account)).pipe(
       map(( delegations : any[] ) => {
+
+        console.log(delegations)
         let sums = [];
         // @ts-ignore
         if(delegations)
@@ -153,7 +155,6 @@ export class CosmosServiceInstance {
           return (BigNumber.sum(...sums).toNumber() / 1000000);
         }
            return 0;
-
       })
     );
   }
