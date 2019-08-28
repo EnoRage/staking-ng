@@ -1,8 +1,11 @@
 <div class="container-fluid pt-2 blue-custom">
   <div class="row small pt-2">
     <div class="text-center col-12 d-flex justify-content-around mb-2">
-      <div style="width: 50px;display: inline-block;">
+      <div *ngIf="!showBack" style="width: 50px;display: inline-block;">
         <img src="/assets/images/trust_logo.svg" alt="trust">
+      </div>
+      <div *ngIf="showBack" >
+        <a (click)="goBack()">back</a>
       </div>
     </div>
   </div>

@@ -26,19 +26,24 @@
   <div class="col-12 pt-2">
     <div class="card">
       <div class="card-body p-2">
-        <h6 class="card-title"> Blockhains</h6>
+        <h6 class="card-title">Blockhains</h6>
         <table class="table">
           <tbody>
-          <tr>
-            <th scope="row"><img class="icon"
-                                 src="https://assets.trustwalletapp.com/blockchains/cosmos/info/logo.png"
-                                 alt="cosmos">
-            </th>
-            <td>Cosmos</td>
-            <td>{{(cosmosAnnualRate | async) || '...'}}</td>
-            <td>ATOM</td>
-            <td><i class="fas fa-chevron-right"></i></td>
-          </tr>
+
+          <ng-template ngFor let-item [ngForOf]="blockchains" let-i="index">
+            <tr (click)="navigateToPosDelegatorsList(item)">
+              <td>
+                <img class="icon" src="{{item.iconUri}}" alt="cosmos">
+              </td>
+              <td>{{item.currencyName}}</td>
+              <td>{{item.annualRate * 100}} %</td>
+              <td>{{item.currencySymbol}}</td>
+              <td>
+                <i class="fas fa-chevron-right"></i>
+              </td>
+            </tr>
+          </ng-template>
+
           </tbody>
         </table>
       </div>

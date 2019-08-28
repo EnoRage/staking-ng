@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {AppComponent} from './app.component';
 import {MainComponent} from './main/main.component';
-import {PosDelegatorsComponent} from './validators/pos-delegators.component';
+import {PosDelegatorsComponent} from './pos-delegators/pos-delegators.component';
 
 const routes: Routes = [
   {
@@ -15,7 +14,7 @@ const routes: Routes = [
     component: MainComponent,
   },
   {
-    path: 'delegators/:blockchain',
+    path: 'delegators/:blockchainId',
     component: PosDelegatorsComponent,
   },
 ];

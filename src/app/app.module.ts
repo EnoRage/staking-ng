@@ -5,14 +5,16 @@ import {AppComponent} from './app.component';
 import {AccountInfoComponent} from './layout/account-info.component';
 import {MainComponent} from './main/main.component';
 import {HttpClientModule} from '@angular/common/http';
-import {PosDelegatorsComponent} from './validators/pos-delegators.component';
+import {RowComponent} from './row/row.component';
+import {PosDelegatorsComponent} from './pos-delegators/pos-delegators.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AccountInfoComponent,
     MainComponent,
-    PosDelegatorsComponent
+    PosDelegatorsComponent,
+    RowComponent
   ],
   imports: [
     BrowserModule,

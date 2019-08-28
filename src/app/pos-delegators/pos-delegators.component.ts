@@ -11,7 +11,8 @@ export class PosDelegatorsComponent implements OnInit {
   blockchain: string;
 
   constructor(activatedRoute: ActivatedRoute) {
-    this.blockchain = activatedRoute.snapshot.params.blockchain;
+    this.blockchain = activatedRoute.snapshot.params.blockchainId;
+    // TODO: get a list of validator
   }
 
   ngOnInit() {
