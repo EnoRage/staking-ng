@@ -8,6 +8,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {PosDelegatorsComponent} from './pos-delegators/pos-delegators.component';
 import { DetailsComponent } from './details/details.component';
 import {CommonModule} from '@angular/common';
+import {TestComponent} from "./test/test.component";
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import {CommonModule} from '@angular/common';
     AccountInfoComponent,
     MainComponent,
     PosDelegatorsComponent,
-    DetailsComponent
+    DetailsComponent,
+    TestComponent
   ],
   imports: [
     CommonModule,
