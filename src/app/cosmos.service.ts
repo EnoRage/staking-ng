@@ -60,6 +60,12 @@ export class CosmosService {
   }
 }
 
+// TODO: use BigInt and polyfill
+export function toAtom(microatom: any): number {
+  const denominator = new BigNumber(1000000);
+  return Number(microatom / denominator);
+}
+
 export class CosmosServiceInstance {
   currentAccount : string;
   balance$ : Observable<string | BigNumber>;

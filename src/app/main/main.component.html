@@ -3,16 +3,16 @@
     <div class="card">
       <div class="card-body p-2">
         <h6 class="card-title"> Staking</h6>
-        <table class="table">
+        <table class="table m-0">
           <tbody>
           <ng-template ngFor let-item [ngForOf]="(myStakeHolders$ | async)" let-i="index">
             <tr (click)="navigateToMyStakeHoldersList(item)">
-              <td>
+              <td class="m-0 p-0">
                 <img class="icon" src="{{item.info.image}}" alt="cosmos">
               </td>
-              <td>{{item.info.name}}</td>
+              <td class="m-0 p-0">{{item.info.name}}</td>
               <td>{{item.reward.annual.toFixed(2)}} %</td>
-<!--              <td>{{(this.getStakedAmount(item.id) | async) || '...'}}</td>-->
+              <td>{{item.amount}}</td>
               <td>ATOM</td>
               <td>
                 <i class="fas fa-chevron-right"></i>
@@ -29,7 +29,7 @@
 <div class="row small">
   <div class="col-12 pt-2">
     <div class="card">
-      <div class="card-body p-2">
+      <div class="card-body p-2  m-0">
         <h6 class="card-title">Blockhains</h6>
         <table class="table">
           <tbody>
