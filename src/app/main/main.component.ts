@@ -1,14 +1,9 @@
-import {Component, OnInit} from '@angular/core';
 import {combineLatest, Observable, of, timer} from 'rxjs';
 import {IBlockchainDto} from '../dto';
 import {Router} from '@angular/router';
-import {CosmosService, CosmosServiceInstance, Validator, Validators} from "../cosmos.service";
-import {find, map} from "rxjs/operators";
-import {element} from "protractor";
-
-// interface IStakeHolderDto {
-//
-// }
+import {CosmosService, CosmosServiceInstance, Validator, Validators} from '../cosmos.service';
+import {find, map, shareReplay, switchMap} from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-main',
@@ -17,67 +12,60 @@ import {element} from "protractor";
 })
 export class MainComponent implements OnInit {
 
-  cosmosAnnualRate : Observable<string>;
+  cosmosAnnualRate: Observable<string>;
   // @ts-ignore
-  blockchains : Array<IBlockchainDto> = [];
+  blockchains: Array<IBlockchainDto> = [];
   // @ts-ignore
-  myStakeHolders : Observable<Array<Validator>>;
-  cosmosInstance : CosmosServiceInstance;
-  allDelegatorsInfo : Observable<any>;
+  myStakeHolders$: Observable<Array<Validator>>;
+  cosmosInstance: CosmosServiceInstance;
+  allDelegatorsInfo: Observable<any>;
 
-  constructor( private router : Router, private cosmos : CosmosService ) {
+  constructor(private router: Router, private cosmos: CosmosService) {
     this.cosmosAnnualRate = of('9%');
     this.cosmosInstance = this.cosmos.getInstance('cosmos1cj7u0wpe45j0udnsy306sna7peah054upxtkzk');
     this.allDelegatorsInfo = this.cosmosInstance.getDelegations();
-    this.myStakeHolders = combineLatest([timer(0, 10000), this.cosmosInstance.getValidators(), this.cosmosInstance.getDelegations()]).pipe(
-      map(( x : any ) => {
-          const [timer, validators, delegators] = x;
 
-          let delegatorsAddresses = [];
+    const validatorsAndDelegation = [
+      this.cosmosInstance.getValidators(),
+      this.cosmosInstance.getDelegations()
+    ];
 
-          if (delegators && validators) {
-            delegators.forEach(( delegator ) => {
-              // @ts-ignore
-              delegatorsAddresses.push(delegator.validatorAddress);
-            });
-            // @ts-ignore
-            const res = delegatorsAddresses.filter(( item, pos, self ) => {
-              return self.indexOf(item) == pos;
-            });
-            //
-            //   let sums = [];
-            //   res.forEach(( i, index ) => {
-            //     if (i == delegators[index].validatorAddress
-            //       // @ts-ignore
-            //       && !sums.find(( s ) => {
-            //         s.validatorAddress == delegators[index].validatorAddress
-            //       })) {
-            //       // @ts-ignore
-            //       sums.push({validatorAddress: delegators[index].validatorAddress, sum: Number(delegators[index].shares)})
-            //     } else if (i == delegators[index].validatorAddress
-            //       // @ts-ignore
-            //       && sums.find(( s ) => {
-            //         s.validatorAddress == delegators[index].validatorAddress
-            //       })) {
-            //       sums[index]({validatorAddress: delegators[index].validatorAddress, sum: Number(delegators[index].shares)})
-            //     }
-            //   })
-            // )
-            // @ts-ignore
-            let validatorsFinal = [];
-            validators.docs.forEach(( validator ) => {
-              const f = res.find(element => element == validator.id);
-              if (f) {
-                // @ts-ignore
-                validatorsFinal.push(validator);
-              }
+    const tmp$ = combineLatest(validatorsAndDelegation).pipe(
+      map((data: any[]) => {
+          const [validators, delegators] = data;
 
-            });
-            return validatorsFinal;
+          if (!validators || !delegators) {
+            return [];
           }
 
+          // TODO: improve with reduce
+          const addressesOfAllDelegators = delegators.map((d) => {
+            return d.validatorAddress;
+          });
+
+          const uniqueAddressesOfAllDelegators = addressesOfAllDelegators.filter((item, pos, self) => {
+            return self.indexOf(item) === pos;
+          });
+
+          // TODO: improve with reduce
+          const myStakeHolders = [];
+          validators.docs.forEach((validator) => {
+            const f = uniqueAddressesOfAllDelegators.find((element) => element === validator.id);
+            if (f) {
+              myStakeHolders.push(validator);
+            }
+          });
+
+          return myStakeHolders;
         }
       ));
+
+    this.myStakeHolders$ = timer(0, 10000).pipe(
+      switchMap(() => {
+        return tmp$;
+      }),
+      shareReplay()
+    );
 
   }
 
@@ -93,16 +81,16 @@ export class MainComponent implements OnInit {
     ];
   }
 
-  navigateToPosDelegatorsList( item : IBlockchainDto ) {
+  navigateToPosDelegatorsList(item: IBlockchainDto) {
 
     this.router.navigate([`/delegators/${item.blockchainId}`]);
   }
 
-  navigateToMyStakeHoldersList( item : Validator ) {
+  navigateToMyStakeHoldersList(item: Validator) {
     this.router.navigate([`/details/${item.id}`]);
   }
 
-  getValidator( validatorId : string ) : Observable<Validator> {
+  getValidator(validatorId: string): Observable<Validator> {
     // @ts-ignore
     return this.cosmosInstance.getValidators().pipe(
       // @ts-ignore
@@ -110,17 +98,17 @@ export class MainComponent implements OnInit {
     );
   }
 
-  getStakedAmount( validatorId : string ) : Observable<number> {
+  getStakedAmount(validatorId: string): Observable<number> {
     return this.allDelegatorsInfo.pipe(
-      map(( response ) => {
+      map((response) => {
         let stakedSumArray = [];
-        response.forEach(( i ) => {
+        response.forEach((i) => {
           // @ts-ignore
           stakedSumArray.push(Number(i.shares) / 1000000);
 
         });
         // @ts-ignore
-        return stakedSumArray.reduce(( a, b ) => a + b, 0).toFixed(6)
+        return stakedSumArray.reduce((a, b) => a + b, 0).toFixed(6);
       })
     );
   }

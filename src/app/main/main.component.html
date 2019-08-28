@@ -1,11 +1,11 @@
-<div *ngIf="(myStakeHolders | async)" class="row small">
+<div *ngIf="(myStakeHolders$ | async)" class="row small">
   <div class="col-12 pt-2">
     <div class="card">
       <div class="card-body p-2">
         <h6 class="card-title"> Staking</h6>
         <table class="table">
           <tbody>
-          <ng-template ngFor let-item [ngForOf]="(myStakeHolders | async)" let-i="index">
+          <ng-template ngFor let-item [ngForOf]="(myStakeHolders$ | async)" let-i="index">
             <tr (click)="navigateToMyStakeHoldersList(item)">
               <td>
                 <img class="icon" src="{{item.info.image}}" alt="cosmos">
