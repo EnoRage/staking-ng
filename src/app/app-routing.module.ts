@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {AppComponent} from './app.component';
 import {MainComponent} from './main/main.component';
+import {ValidatorsComponent} from './validators/validators.component';
 
 const routes: Routes = [
   {

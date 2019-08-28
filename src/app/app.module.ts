@@ -5,12 +5,14 @@ import {AppComponent} from './app.component';
 import {LayoutComponent} from './layout/layout.component';
 import {MainComponent} from './main/main.component';
 import {HttpClientModule} from '@angular/common/http';
+import {ValidatorsComponent} from './validators/validators.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LayoutComponent,
-    MainComponent
+    MainComponent,
+    ValidatorsComponent
   ],
   imports: [
     BrowserModule,
