@@ -34,7 +34,7 @@ export class AppComponent {
 
     this.endpoint = environment.production
       ? 'https://blockatlas.trustwalletapp.com/'
-      : 'http://localhost:9000/blockatlas/';
+      : 'https://3e2f2399.ngrok.io/blockatlas/'; // http://localhost:9000/blockatlas/
 
     this.getValidatorsOnce$().subscribe(
       (resp: any) => {
