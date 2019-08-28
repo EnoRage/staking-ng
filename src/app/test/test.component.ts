@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {TrustProviderService} from "../trust-provider.service";
-import {Subscription} from "rxjs";
-import {CosmosService, CosmosServiceInstance} from "../cosmos.service";
+import {TrustProviderService} from '../trust-provider.service';
+import {Subscription} from 'rxjs';
+import {CosmosService, CosmosServiceInstance} from '../cosmos.service';
 
 @Component({
   selector: 'app-test',
@@ -9,12 +9,12 @@ import {CosmosService, CosmosServiceInstance} from "../cosmos.service";
   styleUrls: ['./test.component.scss']
 })
 export class TestComponent implements OnInit {
-  subscription : Subscription;
-  cosmosInstance : CosmosServiceInstance;
-  account : string;
+  subscription: Subscription;
+  cosmosInstance: CosmosServiceInstance;
+  account: string;
 
-  constructor( private trustProvider : TrustProviderService, private cosmos : CosmosService ) {
-    this.subscription = this.trustProvider.currentAccount$.subscribe(( account ) => {
+  constructor(private trustProvider: TrustProviderService, private cosmos: CosmosService) {
+    this.subscription = this.trustProvider.currentAccount$.subscribe((account) => {
       // @ts-ignore
       this.account = account;
       this.cosmosInstance = this.cosmos.getInstance(account);
@@ -29,14 +29,14 @@ export class TestComponent implements OnInit {
       //     info.sequence, info.accountNumber
       //   ).then(( r ) => (r))
       // })
-    })
+    });
   }
 
   ngOnInit() {
   }
 
   stake() {
-    const tmp = this.cosmosInstance.getTransactionInfo(this.account).subscribe(( info : any ) => {
+    const tmp = this.cosmosInstance.getTransactionInfo(this.account).subscribe((info: any) => {
       // coin : number, addressTo : string, addressFrom : string, amount : string, sequence: string, accountNumber: string
       const a = this.trustProvider.transactionSign(
         'unstake',
@@ -45,12 +45,12 @@ export class TestComponent implements OnInit {
         this.account,
         '10000',
         info.sequence, info.accountNumber
-      ).then(( r ) => (r))
-    })
+      ).then((r) => (r));
+    });
   }
 
   unStake() {
-    const tmp = this.cosmosInstance.getTransactionInfo(this.account).subscribe(( info : any ) => {
+    const tmp = this.cosmosInstance.getTransactionInfo(this.account).subscribe((info: any) => {
       // coin : number, addressTo : string, addressFrom : string, amount : string, sequence: string, accountNumber: string
       const a = this.trustProvider.transactionSign(
         'unstake',
@@ -59,7 +59,7 @@ export class TestComponent implements OnInit {
         this.account,
         '10000',
         info.sequence, info.accountNumber
-      ).then(( r ) => (r))
-    })
+      ).then((r) => (r));
+    });
   }
 }

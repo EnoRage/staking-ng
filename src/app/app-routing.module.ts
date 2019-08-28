@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
 import {MainComponent} from './main/main.component';
 import {PosDelegatorsComponent} from './pos-delegators/pos-delegators.component';
-import {DetailsComponent} from "./details/details.component";
-import {TestComponent} from "./test/test.component";
+import {DetailsComponent} from './details/details.component';
+import {TestComponent} from './test/test.component';
 
 const routes: Routes = [
   {
@@ -33,4 +33,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}
