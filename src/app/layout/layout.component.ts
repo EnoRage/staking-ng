@@ -18,9 +18,9 @@ export class LayoutComponent implements OnInit {
 
   constructor( private trustProvider : TrustProviderService, private cosmos : CosmosService ) {
 
-    this.subscription = this.trustProvider.currentAccount$.subscribe(( account ) => {
-      this.cosmosInstance = this.cosmos.getInstance(account);
-      // this.cosmosInstance.getStakedAmount().subscribe();
+    // this.subscription = this.trustProvider.currentAccount$.subscribe(( account ) => {
+      this.cosmosInstance = this.cosmos.getInstance('cosmos16gdxm24ht2mxtpz9cma6tr6a6d47x63hlq4pxt');
+      this.cosmosInstance.getStakedAmount().subscribe();
       this.balance$ = this.cosmosInstance.balance$;
       this.fiat$ = combineLatest([this.cosmosInstance.getPrice(),  this.balance$]).pipe(
         map(( x : any[] ) => {
@@ -34,7 +34,7 @@ export class LayoutComponent implements OnInit {
         }),
         shareReplay(1)
       );
-    });
+    // });
   }
 
   ngOnInit() {

@@ -63,7 +63,8 @@ export class CosmosServiceInstance {
   rpc : CosmosRPC;
 
   constructor( private http : HttpClient, private account : string ) {
-    this.rpc = new CosmosRPC('https://cosmos-rpc.trustwalletapp.com');
+    // this.rpc = new CosmosRPC('https://cosmos-rpc.trustwalletapp.com');
+    this.rpc = new CosmosRPC('https://stargate.cosmos.network');
     this.currentAccount = account;
     const timer$ = timer(0, 5000);
     const balance$ = this.getBalance(account);
