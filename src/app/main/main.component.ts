@@ -1,10 +1,11 @@
 import {combineLatest, Observable, of, timer} from 'rxjs';
-import {IBlockchainDto} from '../dto';
+import {IBlockchainDto, IValidator} from '../dto';
 import {Router} from '@angular/router';
-import {CosmosService, CosmosServiceInstance, toAtom, Validator} from '../cosmos.service';
+import {CosmosService, CosmosServiceInstance} from '../cosmos.service';
 import {find, map, shareReplay, switchMap} from 'rxjs/operators';
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {CosmosDelegation} from '@trustwallet/rpc/lib';
+import {toAtom} from '../helpers';
 
 interface IAggregatedDelegationMap {
   // TODO: Use BN or native browser BigInt() + polyfill
@@ -16,13 +17,13 @@ interface IStakeAmount {
   amount: number;
 }
 
-interface IValidatorInfo extends Validator {
+interface IValidatorInfo extends IValidator {
   amount: number; // TODO: Use big number or BigInt, show on UI using pipe
 }
 
 type StakeHolderList = Array<IValidatorInfo>;
 
-function map2List(address2stake: IAggregatedDelegationMap, validators: Array<Validator>): Array<IValidatorInfo> {
+function map2List(address2stake: IAggregatedDelegationMap, validators: Array<IValidator>): Array<IValidatorInfo> {
 
   return Object.keys(address2stake).map((address) => {
     const validator = validators.find(v => v.id === address);
@@ -76,7 +77,7 @@ export class MainComponent {
           }
 
 
-          const bestCosmosInterestRate = approvedValidators.docs.reduce((bestRate: number, validator: Validator) => {
+          const bestCosmosInterestRate = approvedValidators.docs.reduce((bestRate: number, validator: IValidator) => {
             return bestRate < validator.reward.annual
               ? validator.reward.annual
               : bestRate;
@@ -117,11 +118,11 @@ export class MainComponent {
     this.router.navigate([`/delegators/${item.blockchainId}`]);
   }
 
-  navigateToMyStakeHoldersList(item: Validator) {
+  navigateToMyStakeHoldersList(item: IValidator) {
     this.router.navigate([`/details/${item.id}`]);
   }
 
-  getValidator(validatorId: string): Observable<Validator> {
+  getValidator(validatorId: string): Observable<IValidator> {
     // @ts-ignore
     return this.cosmosInstance.getValidators().pipe(
       // @ts-ignore

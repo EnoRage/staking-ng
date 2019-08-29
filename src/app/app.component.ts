@@ -35,21 +35,12 @@ export class AppComponent {
     this.endpoint = environment.production
       ? 'https://blockatlas.trustwalletapp.com/'
       : 'http://142.93.172.157:9000/blockatlas/'; // http://localhost:9000/blockatlas/
-
-    this.getValidatorsOnce$().subscribe(
-      (resp: any) => {
-        // console.log(resp);
-      }
-    );
   }
 
   goBack() {
-    // window.history.back();
     this.location.back();
   }
 
-
-  // @ts-ignore
   getValidatorsOnce$(): Observable<Object> {
     return this.http.get(`${this.endpoint}v2/cosmos/staking/validators`);
   }
